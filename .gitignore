@@ -38,3 +38,6 @@ out/
 
 ### SETTING FILE ###
 application.yml
+
+### TEST SQL ###
+*.sql
