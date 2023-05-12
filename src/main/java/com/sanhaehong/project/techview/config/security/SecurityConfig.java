@@ -21,7 +21,7 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                     .authorizeHttpRequests()
-                    .requestMatchers("/", "/css/**", "/img/**", "/js/**", "/login", "/question/**")
+                    .requestMatchers("/", "/css/**", "/img/**", "/js/**", "/login", "/question/lists", "/question/view", "/question/add")
                     .permitAll()
                 .and()
                     .logout()
