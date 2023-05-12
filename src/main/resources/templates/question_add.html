@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko" th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::h3}, ~{::div})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>질문 등록</title>
+</head>
+<body>
+
+<h3 class="text-dark mb-4">질문 등록</h3>
+
+<div class="card shadow mb-5">
+  <div class="card-body p-sm-5">
+    <form th:action th:object="${question}" method="post">
+      <h6>질문</h6>
+      <div class="mb-3">
+        <input class="form-control" type="text" id="content" th:field="*{content}" placeholder="질문을 입력하세요" />
+      </div>
+      <h6>카테고리</h6>
+      <div class="mb-3">
+        <select th:field="*{category}"class="form-select">
+          <option th:each="category : ${categories}" th:value="${category}" th:text="${category.name}"></option>
+        </select>
+      </div>
+      <div class="mb-3"></div>
+      <div><button class="btn btn-primary d-block w-100" type="submit">등록</button></div>
+    </form>
+  </div>
+</div>
+
+
+</body>
