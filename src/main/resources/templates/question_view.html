@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ko" th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::h3}, ~{::div})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>면접 질문</title>
+</head>
+<body>
+
+<h3 class="text-dark mb-4">면접 질문</h3>
+
+<div class="card shadow">
+  <div class="card-body">
+    <div class="card" style="margin-bottom: 15px;">
+      <div class="card-body" style="margin-bottom: 0;">
+        <h5 class="card-title" style="margin: 0px;" th:text="|Q. ${question.content}|"></h5>
+      </div>
+    </div>
+    <div th:each="answer: ${answers}">
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0" th:text="${answer.writer.name}">작성자</h5>
+        </div>
+        <div class="card-body">
+          <span th:each="line : ${answer.content.split('\n')}">
+            <span th:text="${line}">Line</span><br>
+          </span>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-primary col mb-3" type="button" onclick="document.getElementById('ansForm').style.display = 'block'">답변 등록</button>
+    <form th:action th:object="${answerForm}" id="ansForm" style="display: none; margin-bottom: 10px" method="post" >
+      <textarea class="form-control mb-3" type="text" id="content" th:field="*{content}" placeholder="답변을 입력하세요"></textarea>
+      <div><button class="btn btn-primary d-block w-100" type="submit">등록</button></div>
+    </form>
+  </div>
+</div>
+
+</body>
+</html>
