@@ -11,13 +11,14 @@
 <div class="card shadow">
   <div class="card-body">
     <div class="btn-group" role="group"></div>
-    <form><input class="form-control form-control form-control-sm" type="search" aria-controls="dataTable" placeholder="검색어" style="margin-bottom: 10px;width: 50%;display: inline;height: 40px;" /><select class="form-select" style="margin-bottom: 10px;width: 50%;display: inline;height: 40px;">
-      <optgroup label="This is a group">
-        <option value="12" selected>This is item 1</option>
-        <option value="13">This is item 2</option>
-        <option value="14">This is item 3</option>
-      </optgroup>
-    </select><button class="btn btn-primary" type="button">검색</button></form>
+    <form th:action th:object="${question}" method="post">
+      <input th:field="*{content}" class="form-control form-control form-control-sm mb-1 d-inline" type="search" aria-controls="dataTable" placeholder="검색어" style="width: 40%; height: 40px;" />
+      <select th:field="*{category}" class="form-select mb-1 d-inline" style="width: 40%; height: 40px;" >
+        <option value="" selected></option>
+        <option th:each="category : ${categories}" th:value="${category}" th:text="${category.name}"></option>
+      </select>
+      <button class="btn btn-primary" type="submit">검색</button>
+    </form>
     <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
       <table id="dataTable" class="table my-0">
         <thead>
@@ -47,7 +48,7 @@
       <div class="col-md-6">
         <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
           <ul class="pagination">
-            <li th:each="i : ${#numbers.sequence(1, totalPage)}" class="page-item"><a class="page-link" th:href="@{/question/lists?page=} + ${i - 1}" th:text="${i}"></a></li>
+            <li th:each="i : ${#numbers.sequence(totalPage, 1, -1)}" class="page-item"><a class="page-link" th:href="@{/question/lists?page=} + ${i - 1}" th:text="${i}"></a></li>
           </ul>
         </nav>
       </div>

@@ -6,7 +6,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class QuestionFormDto {
+public class AddQuestionDto {
 
     @NotBlank(message = "질문을 작성해주세요")
     private String content;
