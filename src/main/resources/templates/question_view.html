@@ -33,7 +33,14 @@
     </div>
     <button class="btn btn-primary col mb-3" type="button" onclick="document.getElementById('ansForm').style.display = 'block'">답변 등록</button>
     <form th:action th:object="${answerForm}" id="ansForm" style="display: none; margin-bottom: 10px" method="post" >
-      <textarea class="form-control mb-3" type="text" id="content" th:field="*{content}" placeholder="답변을 입력하세요"></textarea>
+      <script>
+        function resize(obj) {
+          obj.style.height = "1px";
+          obj.style.height = (12+obj.scrollHeight)+"px";
+        }
+      </script>
+      <textarea class="form-control mb-3" type="text" id="content" th:field="*{content}" placeholder="답변을 입력하세요"
+                onkeydown="resize(this)" onkeyup="resize(this)"></textarea>
       <div><button class="btn btn-primary d-block w-100" type="submit">등록</button></div>
     </form>
   </div>
