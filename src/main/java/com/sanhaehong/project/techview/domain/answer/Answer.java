@@ -4,6 +4,7 @@ import com.sanhaehong.project.techview.domain.BaseTimeEntity;
 import com.sanhaehong.project.techview.domain.question.Question;
 import com.sanhaehong.project.techview.domain.user.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -28,4 +29,10 @@ public class Answer extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User writer;
 
+    @Builder
+    public Answer(String content, Question question, User writer) {
+        this.content = content;
+        this.question = question;
+        this.writer = writer;
+    }
 }
