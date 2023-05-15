@@ -16,14 +16,18 @@
       </div>
     </div>
     <div th:each="answer: ${answers}">
-      <div class="card">
-        <div class="card-header">
+      <div class="card mb-3">
+        <div class="card-header d-flex align-items-center">
+          <img th:src="${answer.writer.picture}" style="width: 1.5em; margin-right: 10px">
           <h5 class="mb-0" th:text="${answer.writer.name}">작성자</h5>
         </div>
         <div class="card-body">
           <span th:each="line : ${answer.content.split('\n')}">
             <span th:text="${line}">Line</span><br>
           </span>
+        </div>
+        <div class="card-body">
+          <span th:text="|작성일자: ${#temporals.format(answer.createdDate, 'yyyy-MM-dd')}|"></span>
         </div>
       </div>
     </div>
