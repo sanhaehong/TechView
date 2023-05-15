@@ -37,9 +37,9 @@ public class QuestionController {
 
     @PostMapping("/question/add")
     public String addQuestion(@Valid @ModelAttribute(name = "question") QuestionFormDto questionFormDto,
-                              BindingResult bindingResult) {
-        System.out.println(bindingResult.getAllErrors());
+                              BindingResult bindingResult, Model model) {
         if(bindingResult.hasErrors()) {
+            model.addAttribute("categories", Category.values());
             return "question_add";
         }
         questionRepository.save(questionFormDto.toEntity());

@@ -14,6 +14,7 @@
       <h6>질문</h6>
       <div class="mb-3">
         <input class="form-control" type="text" id="content" th:field="*{content}" placeholder="질문을 입력하세요" />
+        <div class="alert alert-danger mt-1" role="alert" th:errors="*{content}"/>
       </div>
       <h6>카테고리</h6>
       <div class="mb-3">
