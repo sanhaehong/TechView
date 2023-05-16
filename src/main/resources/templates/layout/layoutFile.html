@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"/>
-    <title th:replace="${title}">Dashboard - Brand</title>
+    <title th:replace="${title}">Layout</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script src="https://kit.fontawesome.com/c88d852d61.js" crossorigin="anonymous"></script>
     <script defer th:src="@{/js/bootstrap.min.js}"></script>
@@ -28,7 +28,7 @@
             </a>
             <ul id="accordionSidebar" class="navbar-nav text-light">
                 <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/question/lists?page=0}">
+                    <a class="nav-link" th:href="@{/question/lists?page=0}" th:classappend="${navURI == 'question'} ? 'active' : ''">
                         <i class="fas fa-bookmark"></i>
                         <span>면접 질문</span>
                     </a>
