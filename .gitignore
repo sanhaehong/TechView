@@ -37,4 +37,10 @@ out/
 .vscode/
 
 ### SETTING FILE ###
-application.yml
+*.yml
+
+### TEST SQL ###
+*.sql
+
+### SETTING FILE ###
+*.yml
