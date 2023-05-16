@@ -1,19 +1,17 @@
 package com.sanhaehong.project.techview;
 
 import com.sanhaehong.project.techview.domain.answer.Answer;
-import com.sanhaehong.project.techview.domain.answer.AnswerRepository;
+import com.sanhaehong.project.techview.repository.AnswerRepository;
 import com.sanhaehong.project.techview.domain.question.Category;
 import com.sanhaehong.project.techview.domain.question.Question;
-import com.sanhaehong.project.techview.domain.question.QuestionRepository;
+import com.sanhaehong.project.techview.repository.QuestionRepository;
 import com.sanhaehong.project.techview.domain.user.Role;
 import com.sanhaehong.project.techview.domain.user.User;
-import com.sanhaehong.project.techview.domain.user.UserRepository;
+import com.sanhaehong.project.techview.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 @Component
 @Profile({"local", "test"})

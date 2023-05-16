@@ -1,16 +1,16 @@
 package com.sanhaehong.project.techview.controller;
 
 import com.sanhaehong.project.techview.annotation.LogInUser;
-import com.sanhaehong.project.techview.config.security.SessionUser;
+import com.sanhaehong.project.techview.security.SessionUser;
 import com.sanhaehong.project.techview.domain.answer.Answer;
-import com.sanhaehong.project.techview.domain.answer.AnswerRepository;
+import com.sanhaehong.project.techview.repository.AnswerRepository;
 import com.sanhaehong.project.techview.domain.question.Category;
 import com.sanhaehong.project.techview.domain.user.User;
-import com.sanhaehong.project.techview.domain.user.UserRepository;
+import com.sanhaehong.project.techview.repository.UserRepository;
 import com.sanhaehong.project.techview.dto.AddAnswerDto;
 import com.sanhaehong.project.techview.dto.AddQuestionDto;
 import com.sanhaehong.project.techview.domain.question.Question;
-import com.sanhaehong.project.techview.domain.question.QuestionRepository;
+import com.sanhaehong.project.techview.repository.QuestionRepository;
 import com.sanhaehong.project.techview.dto.SearchQuestionDto;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +24,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Controller

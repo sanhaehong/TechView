@@ -1,5 +1,6 @@
-package com.sanhaehong.project.techview.domain.user;
+package com.sanhaehong.project.techview.repository;
 
+import com.sanhaehong.project.techview.domain.user.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
