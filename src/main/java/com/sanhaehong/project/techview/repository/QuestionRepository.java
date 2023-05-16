@@ -1,5 +1,7 @@
-package com.sanhaehong.project.techview.domain.question;
+package com.sanhaehong.project.techview.repository;
 
+import com.sanhaehong.project.techview.domain.question.Category;
+import com.sanhaehong.project.techview.domain.question.Question;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

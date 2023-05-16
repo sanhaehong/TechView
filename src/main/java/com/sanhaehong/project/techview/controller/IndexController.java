@@ -1,7 +1,7 @@
 package com.sanhaehong.project.techview.controller;
 
 import com.sanhaehong.project.techview.annotation.LogInUser;
-import com.sanhaehong.project.techview.config.security.SessionUser;
+import com.sanhaehong.project.techview.security.SessionUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

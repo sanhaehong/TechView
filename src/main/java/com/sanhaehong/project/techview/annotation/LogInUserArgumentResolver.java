@@ -1,6 +1,6 @@
 package com.sanhaehong.project.techview.annotation;
 
-import com.sanhaehong.project.techview.config.security.SessionUser;
+import com.sanhaehong.project.techview.security.SessionUser;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;

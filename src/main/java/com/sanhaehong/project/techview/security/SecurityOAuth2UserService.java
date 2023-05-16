@@ -1,7 +1,7 @@
-package com.sanhaehong.project.techview.config.security;
+package com.sanhaehong.project.techview.security;
 
 import com.sanhaehong.project.techview.domain.user.User;
-import com.sanhaehong.project.techview.domain.user.UserRepository;
+import com.sanhaehong.project.techview.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

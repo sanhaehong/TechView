@@ -1,4 +1,4 @@
-package com.sanhaehong.project.techview.config.security;
+package com.sanhaehong.project.techview.security;
 
 import com.sanhaehong.project.techview.domain.user.Role;
 import com.sanhaehong.project.techview.domain.user.User;
