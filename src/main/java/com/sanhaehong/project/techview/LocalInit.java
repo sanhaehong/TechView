@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-@Profile("local")
+@Profile({"local", "test"})
 @RequiredArgsConstructor
 public class LocalInit {
 
