@@ -12,11 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class IndexController {
 
     @GetMapping("/")
-    public String index(Model model, @LogInUser SessionUser user) {
-        if(user != null) {
-            model.addAttribute("userName", user.getName());
-            model.addAttribute("userPicture", user.getPicture());
-        }
+    public String index() {
         return "index";
     }
 }
