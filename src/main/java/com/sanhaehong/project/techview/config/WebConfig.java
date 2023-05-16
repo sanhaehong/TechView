@@ -26,6 +26,6 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(new NavbarInterceptor())
                 .order(1)
                 .addPathPatterns("/**")
-                .excludePathPatterns("/css/**", "/js/**", "/img/**");
+                .excludePathPatterns("/css/**", "/js/**", "/img/**", "/login");
     }
 }
