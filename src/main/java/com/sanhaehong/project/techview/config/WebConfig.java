@@ -1,6 +1,6 @@
 package com.sanhaehong.project.techview.config;
 
-import com.sanhaehong.project.techview.annotation.LogInUserArgumentResolver;
+import com.sanhaehong.project.techview.controller.argument.LogInUserArgumentResolver;
 import com.sanhaehong.project.techview.intercepter.NavbarInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;

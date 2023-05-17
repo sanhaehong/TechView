@@ -1,17 +1,17 @@
 package com.sanhaehong.project.techview.controller;
 
-import com.sanhaehong.project.techview.annotation.LogInUser;
+import com.sanhaehong.project.techview.controller.argument.LogInUser;
+import com.sanhaehong.project.techview.controller.model.QuestionModel;
 import com.sanhaehong.project.techview.security.SessionUser;
 import com.sanhaehong.project.techview.domain.answer.Answer;
-import com.sanhaehong.project.techview.repository.AnswerRepository;
 import com.sanhaehong.project.techview.domain.question.Category;
 import com.sanhaehong.project.techview.domain.user.User;
-import com.sanhaehong.project.techview.repository.UserRepository;
 import com.sanhaehong.project.techview.dto.AddAnswerDto;
 import com.sanhaehong.project.techview.dto.AddQuestionDto;
 import com.sanhaehong.project.techview.domain.question.Question;
-import com.sanhaehong.project.techview.repository.QuestionRepository;
-import com.sanhaehong.project.techview.dto.SearchQuestionDto;
+import com.sanhaehong.project.techview.dto.FindQuestionDto;
+import com.sanhaehong.project.techview.service.AnswerService;
+import com.sanhaehong.project.techview.service.QuestionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -29,9 +29,8 @@ import java.util.List;
 @Controller
 public class QuestionController {
 
-    private final QuestionRepository questionRepository;
-    private final UserRepository userRepository;
-    private final AnswerRepository answerRepository;
+    private final QuestionService questionService;
+    private final AnswerService answerService;
 
     @ModelAttribute("categories")
     public Category[] AddCategoryView() {
@@ -39,66 +38,59 @@ public class QuestionController {
     }
 
     @GetMapping("/question/lists")
-    public String questionList(@ModelAttribute(name = "question") SearchQuestionDto searchQuestionDto, @PageableDefault Pageable pageable, Model model) {
-        Page<Question> questionPage = questionRepository.findAll(pageable);
-        model.addAttribute("questions", questionPage.stream().toList());
-        model.addAttribute("totalQuestion", questionPage.getTotalElements());
-        model.addAttribute("totalPage", questionPage.getTotalPages());
-        return "question_list";
+    public String findQuestion(@ModelAttribute(name = "question") FindQuestionDto findQuestionDto,
+                               @PageableDefault Pageable pageable,
+                               QuestionModel questionModel) {
+        Page<Question> questionPages = questionService.findPageAll(pageable);
+        questionModel.addQuestionPages(questionPages);
+        return "question/question_list";
     }
 
     @PostMapping("/question/lists")
-    public String searchQuestion(@ModelAttribute(name = "question") SearchQuestionDto searchQuestionDto, @PageableDefault Pageable pageable, Model model) {
-        Page<Question> questionPage = questionRepository.findByContentAndCategory(searchQuestionDto.getContent(), searchQuestionDto.getCategory(), pageable);
-        model.addAttribute("questions", questionPage.stream().toList());
-        model.addAttribute("totalQuestion", questionPage.getTotalElements());
-        model.addAttribute("totalPage", questionPage.getTotalPages());
-        return "question_list";
+    public String searchQuestion(@ModelAttribute(name = "question") FindQuestionDto findQuestionDto,
+                                 @PageableDefault Pageable pageable,
+                                 QuestionModel questionModel) {
+        Page<Question> questionPages = questionService.findPage(findQuestionDto, pageable);
+        questionModel.addQuestionPages(questionPages);
+        return "question/question_list";
     }
 
     @GetMapping("/question/add")
-    public String addQuestionForm(@ModelAttribute(name = "question") AddQuestionDto addQuestionDto) {
-        return "question_add";
+    public String addQuestion(@ModelAttribute(name = "question") AddQuestionDto addQuestionDto) {
+        return "question/question_add";
     }
 
     @PostMapping("/question/add")
     public String addQuestion(@Valid @ModelAttribute(name = "question") AddQuestionDto addQuestionDto,
                               BindingResult bindingResult) {
         if(bindingResult.hasErrors()) {
-            return "question_add";
+            return "question/question_add";
         }
-        questionRepository.save(addQuestionDto.toEntity());
-        System.out.println("go?");
+        questionService.save(addQuestionDto);
         return "redirect:/question/lists?page=0";
     }
 
     @GetMapping("/question/view/{id}")
     public String viewQuestion(@PathVariable Long id,
                                @ModelAttribute("answerForm") AddAnswerDto addAnswerDto,
-                               Model model) {
-        Question question = questionRepository.findById(id).get();
-        List<Answer> answers = question.getAnswers();
-        model.addAttribute("question", question);
-        model.addAttribute("answers", answers);
-        return "question_view";
+                               QuestionModel questionModel) {
+        Question question = questionService.findQuestion(id);
+        List<Answer> answers = questionService.findAnswers(id);
+        questionModel.addQuestionAndAnswers(question, answers);
+        return "question/question_view";
     }
 
-    @PostMapping("/question/view/{id}")
-    public String addAnswer(@PathVariable Long id,
+    @PostMapping("/question/view/{questionId}")
+    public String addAnswer(@PathVariable Long questionId,
                             @Valid @ModelAttribute("answerForm") AddAnswerDto addAnswerDto,
                             BindingResult bindingResult,
                             @LogInUser SessionUser user,
                             RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
-            return "question_view";
+            return "question/question_view";
         }
-        User writer = userRepository.findById(user.getId()).get();
-        Question question = questionRepository.findById(id).get();
-        Answer answer = addAnswerDto.toEntity(question, writer);
-        question.getAnswers().add(answer);
-        answerRepository.save(answer);
-        questionRepository.save(question);
-        redirectAttributes.addAttribute("questionId", id);
+        answerService.addAnswer(user.getId(), questionId, addAnswerDto.getContent());
+        redirectAttributes.addAttribute("questionId", questionId);
         return "redirect:/question/view/{questionId}";
     }
 }

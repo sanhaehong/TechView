@@ -9,9 +9,9 @@ import lombok.Data;
 public class AddQuestionDto {
 
     @NotBlank(message = "질문을 작성해주세요")
-    private String content;
+    private final String content;
 
-    private Category category;
+    private final Category category;
 
     public Question toEntity() {
         return Question.builder()

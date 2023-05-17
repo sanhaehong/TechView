@@ -26,7 +26,7 @@ public class Question extends BaseTimeEntity {
     @Column(length = 200, nullable = false)
     private String content;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Answer> answers = new ArrayList<>();
 
     @Builder

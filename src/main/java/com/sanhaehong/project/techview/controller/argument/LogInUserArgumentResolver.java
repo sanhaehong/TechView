@@ -1,4 +1,4 @@
-package com.sanhaehong.project.techview.annotation;
+package com.sanhaehong.project.techview.controller.argument;
 
 import com.sanhaehong.project.techview.security.SessionUser;
 import jakarta.servlet.http.HttpSession;

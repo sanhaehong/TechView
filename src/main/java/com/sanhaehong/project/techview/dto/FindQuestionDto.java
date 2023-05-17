@@ -4,9 +4,8 @@ import com.sanhaehong.project.techview.domain.question.Category;
 import lombok.Data;
 
 @Data
-public class SearchQuestionDto {
+public class FindQuestionDto {
 
-    private String content;
-
-    private Category category;
+    private final String content;
+    private final Category category;
 }
