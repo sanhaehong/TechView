@@ -1,4 +1,4 @@
-package com.sanhaehong.project.techview.annotation;
+package com.sanhaehong.project.techview.controller.argument;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
