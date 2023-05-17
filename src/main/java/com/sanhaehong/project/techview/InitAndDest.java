@@ -9,6 +9,7 @@ import com.sanhaehong.project.techview.domain.user.Role;
 import com.sanhaehong.project.techview.domain.user.User;
 import com.sanhaehong.project.techview.repository.UserRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
@@ -16,7 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 @Profile({"local", "test"})
 @RequiredArgsConstructor
-public class LocalInit {
+public class InitAndDest {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -59,5 +60,13 @@ public class LocalInit {
                         "이후 분할된 하위 배열에 대해 동일한 방법을 재귀적으로 적용하여 정렬합니다.\n" +
                         "Quick sort는 시간 복잡도는 평균적으로 O(n log n)이며, 최악의 경우 O(n^2) 입니다.").build());
     }
+
+    @PreDestroy
+    public void dest() {
+        questionRepository.deleteAll();
+        answerRepository.deleteAll();
+        userRepository.deleteAll();
+    }
+
 
 }

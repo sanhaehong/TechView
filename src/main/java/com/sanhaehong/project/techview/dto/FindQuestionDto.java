@@ -6,7 +6,6 @@ import lombok.Data;
 @Data
 public class FindQuestionDto {
 
-    private String content;
-
-    private Category category;
+    private final String content;
+    private final Category category;
 }
