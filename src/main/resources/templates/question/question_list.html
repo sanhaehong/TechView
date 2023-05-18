@@ -11,9 +11,9 @@
 <div class="card shadow">
   <div class="card-body">
     <div class="btn-group" role="group"></div>
-    <form th:action th:object="${question}" method="post">
-      <input th:field="*{content}" class="form-control form-control form-control-sm mb-1 d-inline" type="search" aria-controls="dataTable" placeholder="검색어" style="width: 40%; height: 40px;" />
-      <select th:field="*{category}" class="form-select mb-1 d-inline" style="width: 40%; height: 40px;" >
+    <form th:action>
+      <input name="content" class="form-control form-control form-control-sm mb-1 d-inline" type="search" aria-controls="dataTable" placeholder="검색어" style="width: 40%; height: 40px;" />
+      <select name="category" class="form-select mb-1 d-inline" style="width: 40%; height: 40px;" >
         <option value="" selected></option>
         <option th:each="category : ${categories}" th:value="${category}" th:text="${category.name}"></option>
       </select>
@@ -48,7 +48,9 @@
       <div class="col-md-6">
         <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
           <ul class="pagination">
-            <li th:each="i : ${#numbers.sequence(1, totalPage, 1)}" class="page-item"><a class="page-link" th:href="@{/question/lists?page=} + ${i - 1}" th:text="${i}"></a></li>
+            <li th:each="i : ${#numbers.sequence(1, totalPage, 1)}" class="page-item">
+              <a class="page-link" th:href="@{/question/lists(page=${i - 1}, searchcontent=${searchContent != null ? searchContent : ''}, searchcategory=${searchCategory != null ? searchCategory : ''})}" th:text="${i}"></a>
+            </li>
           </ul>
         </nav>
       </div>
