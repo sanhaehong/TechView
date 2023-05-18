@@ -3,7 +3,6 @@ package com.sanhaehong.project.techview.service;
 import com.sanhaehong.project.techview.domain.answer.Answer;
 import com.sanhaehong.project.techview.domain.question.Question;
 import com.sanhaehong.project.techview.domain.user.User;
-import com.sanhaehong.project.techview.dto.AddAnswerDto;
 import com.sanhaehong.project.techview.repository.AnswerRepository;
 import com.sanhaehong.project.techview.repository.QuestionRepository;
 import com.sanhaehong.project.techview.repository.UserRepository;
@@ -12,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
