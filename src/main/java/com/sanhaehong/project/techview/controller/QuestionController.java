@@ -6,7 +6,6 @@ import com.sanhaehong.project.techview.domain.question.Category;
 import com.sanhaehong.project.techview.domain.question.Question;
 import com.sanhaehong.project.techview.dto.AddAnswerDto;
 import com.sanhaehong.project.techview.dto.AddQuestionDto;
-import com.sanhaehong.project.techview.dto.FindQuestionDto;
 import com.sanhaehong.project.techview.security.SessionUser;
 import com.sanhaehong.project.techview.service.AnswerService;
 import com.sanhaehong.project.techview.service.QuestionService;
@@ -18,10 +17,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -39,21 +35,17 @@ public class QuestionController {
     }
 
     @GetMapping("/question/lists")
-    public String findQuestion(@ModelAttribute(name = "question") FindQuestionDto findQuestionDto,
+    public String findQuestion(@RequestParam(required = false) String content,
+                               @RequestParam(required = false) Category category,
                                @PageableDefault Pageable pageable,
                                Model model) {
-        Page<Question> questionPages = questionService.findPageAll(pageable);
-        model.addAttribute("questions", questionPages.stream().toList());
-        model.addAttribute("totalQuestion", questionPages.getTotalElements());
-        model.addAttribute("totalPage", questionPages.getTotalPages());
-        return "question/question_list";
-    }
-
-    @PostMapping("/question/lists")
-    public String searchQuestion(@ModelAttribute(name = "question") FindQuestionDto findQuestionDto,
-                                 @PageableDefault Pageable pageable,
-                                 Model model) {
-        Page<Question> questionPages = questionService.findPage(findQuestionDto, pageable);
+        Page<Question> questionPages;
+        if(content == null && category == null) {
+            questionPages = questionService.findPageAll(pageable);
+        }
+        else {
+            questionPages = questionService.findPage(content, category, pageable);
+        }
         model.addAttribute("questions", questionPages.stream().toList());
         model.addAttribute("totalQuestion", questionPages.getTotalElements());
         model.addAttribute("totalPage", questionPages.getTotalPages());

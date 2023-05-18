@@ -4,7 +4,6 @@ import com.sanhaehong.project.techview.domain.answer.Answer;
 import com.sanhaehong.project.techview.domain.question.Category;
 import com.sanhaehong.project.techview.domain.question.Question;
 import com.sanhaehong.project.techview.dto.AddQuestionDto;
-import com.sanhaehong.project.techview.dto.FindQuestionDto;
 import com.sanhaehong.project.techview.repository.QuestionRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -34,10 +33,8 @@ public class QuestionService {
         return questionRepository.findAll(pageable);
     }
 
-    public Page<Question> findPage(FindQuestionDto findQuestionDto, Pageable pageable) {
-        String searchContent = findQuestionDto.getContent();
-        Category searchCategory = findQuestionDto.getCategory();
-        return questionRepository.findByContentAndCategory(searchContent, searchCategory, pageable);
+    public Page<Question> findPage(String content, Category category, Pageable pageable) {
+        return questionRepository.findByContentAndCategory(content, category, pageable);
     }
 
     @Transactional
