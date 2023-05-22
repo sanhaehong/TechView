@@ -2,6 +2,7 @@ package com.sanhaehong.project.techview.domain.mockexam;
 
 import com.sanhaehong.project.techview.domain.user.User;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
@@ -23,5 +24,8 @@ public class MockExam {
     @OneToMany(mappedBy = "mockexam")
     private List<MockExamQuestion> questions = new ArrayList<>();
 
-
+    @Builder
+    public MockExam(User maker) {
+        this.maker = maker;
+    }
 }
