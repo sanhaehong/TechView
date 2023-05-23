@@ -25,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.UUID;
 
 @RequiredArgsConstructor
@@ -150,6 +151,7 @@ public class MockExamController {
     public void processAnswer(@PathVariable Integer problemId,
                               @RequestParam("answerIndexDBId") String answerIndexDBId,
                               @LogInUser SessionUser user) {
+        System.out.println(answerIndexDBId);
         Long examHistoryId = (Long) httpSession.getAttribute("examId");
         mockExamService.saveAnswer(examHistoryId, problemId, answerIndexDBId);
     }
@@ -168,6 +170,18 @@ public class MockExamController {
         model.addAttribute("totalHistory", mockExamHistoryPages.getTotalElements());
         model.addAttribute("totalPage", mockExamHistoryPages.getTotalPages());
         return "mockexam/mockexam_history";
+    }
+
+    @GetMapping("/history/{historyId}")
+    public String viewMockExamHistory(@PathVariable Long historyId,
+                                      Model model) {
+        try {
+            MockExamHistory history = mockExamService.findHistory(historyId);
+            model.addAttribute("history", history);
+            return "mockexam/mockexam_answer";
+        } catch (NoSuchElementException e) {
+            return "redirect:/";
+        }
     }
 
 

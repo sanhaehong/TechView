@@ -50,7 +50,6 @@ public class MockExamService {
     public Page<MockExamHistory> findMockExamHistoryPageAll(Pageable pageable) { return mockExamHistoryRepository.findAll(pageable); }
 
 
-
     public MockExamHistory startMockExam(Long mockExamId, Long userId) {
         MockExam mockExam = mockExamRepository.findById(mockExamId)
                 .orElseThrow(() -> new NoSuchElementException("모의고사 정보가 존재하지 않습니다"));
@@ -76,5 +75,10 @@ public class MockExamService {
                 .mockExamQuestion(question)
                 .answerIndexDBId(answerIndexDBId)
                 .build());
+    }
+
+    public MockExamHistory findHistory(Long historyId) {
+        return mockExamHistoryRepository.findById(historyId)
+                .orElseThrow(() -> new NoSuchElementException("모의고사 응시 정보가 존재하지 않습니다"));
     }
 }
