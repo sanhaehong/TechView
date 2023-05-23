@@ -24,12 +24,12 @@ public class MockExamAnswer {
     private MockExamQuestion mockExamQuestion;
 
     @Column(nullable = false)
-    private String answer;
+    private String answerIndexDBId;
 
     @Builder
-    public MockExamAnswer(MockExamHistory mockExamHistory, MockExamQuestion mockExamQuestion, String answer) {
+    public MockExamAnswer(MockExamHistory mockExamHistory, MockExamQuestion mockExamQuestion, String answerIndexDBId) {
         this.mockExamHistory = mockExamHistory;
         this.mockExamQuestion = mockExamQuestion;
-        this.answer = answer;
+        this.answerIndexDBId = answerIndexDBId;
     }
 }

@@ -2,7 +2,7 @@
 <html lang="ko" th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::h3}, ~{::div})}"
       xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>모의 면접</title>
+    <title>면접 진행</title>
 </head>
 <body>
 
@@ -24,6 +24,7 @@
     </div>
     <script th:inline="javascript">
         let questionText = [[${question}]];
+        let answerId = [[${answerIndexDBId}]];
         let mediaStream = null;
         let mediaRecorder = null;
         let recordedChunks = [];
@@ -74,14 +75,35 @@
         function saveAnswer() {
             let problemId = [[${problemId}]];
 
-            console.log(recordedChunks);
-
             let blob = new Blob(recordedChunks, {
                 type: 'audio/webm'
             });
 
+            let openRequest = indexedDB.open('techviewDB', 1);
+            openRequest.onupgradeneeded = function() {
+                let db = openRequest.result;
+                if (!db.objectStoreNames.contains('answers')) {
+                    db.createObjectStore('answers');
+                }
+            };
+            openRequest.onsuccess = function() {
+                let db = openRequest.result;
+                let transaction = db.transaction('answers', 'readwrite');
+                let answers = transaction.objectStore('answers');
+                let request = answers.put(blob, answerId);
+                request.onsuccess = function() {
+                    console.log('Blob saved successfully');
+                };
+                request.onerror = function() {
+                    console.error('Error in saving blob', request.error);
+                };
+            };
+            openRequest.onerror = function() {
+                console.error('Error in opening DB', openRequest.error);
+            };
+
             let formData = new FormData();
-            formData.append('audio', blob);
+            formData.append('answerIndexDBId', answerId);
 
             let xhr = new XMLHttpRequest();
             xhr.open('POST', '/mockexam/process/' + problemId)

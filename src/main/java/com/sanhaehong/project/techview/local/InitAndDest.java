@@ -1,4 +1,4 @@
-package com.sanhaehong.project.techview;
+package com.sanhaehong.project.techview.local;
 
 import com.sanhaehong.project.techview.domain.answer.Answer;
 import com.sanhaehong.project.techview.domain.mockexam.MockExam;

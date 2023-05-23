@@ -21,12 +21,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @RequiredArgsConstructor
 @Controller
@@ -139,19 +138,24 @@ public class MockExamController {
             MockExamQuestion question = mockExamService.findQuestion(examId, problemId);
             model.addAttribute("question", question.getQuestion().getContent());
             model.addAttribute("problemId", problemId);
+            model.addAttribute("answerIndexDBId", examId + "-" + problemId + "-" + UUID.randomUUID());
             return "mockexam/mockexam_question";
         } catch (IndexOutOfBoundsException e) {
-            return "redirect:/";
+            return "redirect:/mockexam/complete";
         }
     }
 
     @PostMapping(value = "/process/{problemId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @ResponseBody
     public void processAnswer(@PathVariable Integer problemId,
-                                                @RequestParam("audio") MultipartFile audio,
-                                                Model model) throws IOException {
+                              @RequestParam("answerIndexDBId") String answerIndexDBId,
+                              @LogInUser SessionUser user) {
+        Long examHistoryId = (Long) httpSession.getAttribute("examId");
+        mockExamService.saveAnswer(examHistoryId, problemId, answerIndexDBId);
     }
 
-
-
+    @GetMapping("/complete")
+    public String completeMockExam() {
+        return "mockexam/mockexam_complete";
+    }
 }

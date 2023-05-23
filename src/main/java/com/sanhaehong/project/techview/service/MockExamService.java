@@ -1,6 +1,7 @@
 package com.sanhaehong.project.techview.service;
 
 import com.sanhaehong.project.techview.domain.mockexam.MockExam;
+import com.sanhaehong.project.techview.domain.mockexam.MockExamAnswer;
 import com.sanhaehong.project.techview.domain.mockexam.MockExamHistory;
 import com.sanhaehong.project.techview.domain.mockexam.MockExamQuestion;
 import com.sanhaehong.project.techview.domain.question.Question;
@@ -60,5 +61,16 @@ public class MockExamService {
         MockExam mockExam = mockExamRepository.findById(mockExamId)
                 .orElseThrow(() -> new NoSuchElementException("모의고사 정보가 존재하지 않습니다"));
         return mockExam.getQuestions().get(problemSeq);
+    }
+
+    public void saveAnswer(Long examHistoryId, Integer problemId, String answerIndexDBId) {
+        MockExamHistory mockExamHistory = mockExamHistoryRepository.findById(examHistoryId)
+                .orElseThrow(() -> new NoSuchElementException("모의고사 응시 정보가 존재하지 않습니다"));
+        MockExamQuestion question = mockExamHistory.getMockExam().getQuestions().get(problemId);
+
+        mockExamAnswerRepository.save(MockExamAnswer.builder().mockExamHistory(mockExamHistory)
+                .mockExamQuestion(question)
+                .answerIndexDBId(answerIndexDBId)
+                .build());
     }
 }
