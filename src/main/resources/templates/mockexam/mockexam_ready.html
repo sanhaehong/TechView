@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="ko" th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::h3}, ~{::div})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>모의 면접</title>
+</head>
+<body>
+
+<h3 class="text-dark mb-4">면접 준비</h3>
+
+<div class="card shadow">
+  <div class="card-body">
+    <h5>모의면접을 시작합니다.</h5>
+    <h5>마이크를 연결해주시고, 준비가 다 되었다면 "시작" 버튼을 클릭해주세요.</h5>
+    <a class="btn btn-primary" type="button" th:href="@{/mockexam/process/0}">시작</a>
+  </div>
+</div>
+
+</body>
