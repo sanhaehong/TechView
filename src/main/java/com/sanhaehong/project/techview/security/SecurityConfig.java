@@ -24,7 +24,7 @@ public class SecurityConfig {
                     .authorizeHttpRequests()
                     .requestMatchers("/", "/css/**", "/img/**", "/js/**", "/login", "/question/lists", "/question/view/*", "/question/add")
                     .permitAll()
-                    .requestMatchers("/mockexam", "/mockexam/**", "/mockexam/process/**")
+                    .requestMatchers("/mockexam", "/mockexam/**", "/mockexam/process/**", "/mockexam/history/**")
                     .hasRole(USER.name())
                 .and()
                     .logout()

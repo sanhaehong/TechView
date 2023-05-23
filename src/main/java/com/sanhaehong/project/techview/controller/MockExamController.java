@@ -109,7 +109,7 @@ public class MockExamController {
     @GetMapping("/select/lists")
     public String selectMockExam(@PageableDefault Pageable pageable,
                                Model model) {
-        Page<MockExam> mockExamPages = mockExamService.findPageAll(pageable);
+        Page<MockExam> mockExamPages = mockExamService.findMockExamPageAll(pageable);
         model.addAttribute("mockExams", mockExamPages.stream().toList());
         model.addAttribute("totalExam", mockExamPages.getTotalElements());
         model.addAttribute("totalPage", mockExamPages.getTotalPages());
@@ -158,4 +158,17 @@ public class MockExamController {
     public String completeMockExam() {
         return "mockexam/mockexam_complete";
     }
+
+    @GetMapping("/history/lists")
+    public String findMockExamHistory(@PageableDefault Pageable pageable,
+                               Model model) {
+        Page<MockExamHistory> mockExamHistoryPages;
+        mockExamHistoryPages = mockExamService.findMockExamHistoryPageAll(pageable);
+        model.addAttribute("histories", mockExamHistoryPages.stream().toList());
+        model.addAttribute("totalHistory", mockExamHistoryPages.getTotalElements());
+        model.addAttribute("totalPage", mockExamHistoryPages.getTotalPages());
+        return "mockexam/mockexam_history";
+    }
+
+
 }

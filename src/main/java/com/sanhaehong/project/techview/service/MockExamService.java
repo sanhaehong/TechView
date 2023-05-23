@@ -43,9 +43,13 @@ public class MockExamService {
         mockExamRepository.save(mockExam);
     }
 
-    public Page<MockExam> findPageAll(Pageable pageable) {
+    public Page<MockExam> findMockExamPageAll(Pageable pageable) {
         return mockExamRepository.findAll(pageable);
     }
+
+    public Page<MockExamHistory> findMockExamHistoryPageAll(Pageable pageable) { return mockExamHistoryRepository.findAll(pageable); }
+
+
 
     public MockExamHistory startMockExam(Long mockExamId, Long userId) {
         MockExam mockExam = mockExamRepository.findById(mockExamId)
