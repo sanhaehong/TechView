@@ -3,10 +3,12 @@ package com.sanhaehong.project.techview.domain.mockexam;
 import com.sanhaehong.project.techview.domain.question.Question;
 import jakarta.persistence.*;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @Entity
+@Getter
 public class MockExamQuestion {
 
     @Id

@@ -11,30 +11,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @NoArgsConstructor
-@Entity(name = "mockexams")
+@Entity(name = "mockexamhistories")
 @Getter
-public class MockExam extends BaseTimeEntity {
+public class MockExamHistory extends BaseTimeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "mockexam_id")
+    @Column(name = "mockexamhistory_id")
     private Long id;
-
-    private String title;
-
-    private String information;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
-    private User maker;
+    private User taker;
 
-    @OneToMany(mappedBy = "mockexam")
-    private List<MockExamQuestion> questions = new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "mockexam_id")
+    private MockExam mockExam;
+
+    @OneToMany(mappedBy = "mockExamHistory")
+    private List<MockExamAnswer> mockExamAnswers = new ArrayList<>();
 
     @Builder
-    public MockExam(String title, String information, User maker) {
-        this.title = title;
-        this.information = information;
-        this.maker = maker;
+    public MockExamHistory(User taker, MockExam mockExam) {
+        this.taker = taker;
+        this.mockExam = mockExam;
     }
 }

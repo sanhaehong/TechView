@@ -1,13 +1,13 @@
 package com.sanhaehong.project.techview;
 
 import com.sanhaehong.project.techview.domain.answer.Answer;
+import com.sanhaehong.project.techview.domain.mockexam.MockExam;
+import com.sanhaehong.project.techview.domain.mockexam.MockExamQuestion;
 import com.sanhaehong.project.techview.domain.question.Category;
 import com.sanhaehong.project.techview.domain.question.Question;
 import com.sanhaehong.project.techview.domain.user.Role;
 import com.sanhaehong.project.techview.domain.user.User;
-import com.sanhaehong.project.techview.repository.AnswerRepository;
-import com.sanhaehong.project.techview.repository.QuestionRepository;
-import com.sanhaehong.project.techview.repository.UserRepository;
+import com.sanhaehong.project.techview.repository.*;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
@@ -19,9 +19,15 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class InitAndDest {
 
+    public static final int userCount = 2;
+    public static final int questionCount = 18;
+    public static final int answerCount = 2;
+
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
     private final UserRepository userRepository;
+    private final MockExamRepository mockExamRepository;
+    private final MockExamQuestionRepository mockExamQuestionRepository;
 
     @PostConstruct
     public void init() {
@@ -30,9 +36,10 @@ public class InitAndDest {
         userRepository.save(testUser1);
         userRepository.save(testUser2);
 
-        Question testQuestion = Question.builder().category(Category.ALGORITHM).content("가장 기억에 남는 정렬 알고리즘 1개를 골라 설명해보세요").build();
-        questionRepository.save(testQuestion);
-        questionRepository.save(Question.builder().category(Category.NETWORK).content("www.google.com 에 접속할 때 일어나는 일을 설명해보세요").build());
+        Question testQuestion1 = Question.builder().category(Category.ALGORITHM).content("가장 기억에 남는 정렬 알고리즘 1개를 골라 설명해보세요").build();
+        Question testQuestion2 = Question.builder().category(Category.NETWORK).content("www.google.com 에 접속할 때 일어나는 일을 설명해보세요").build();
+        questionRepository.save(testQuestion1);
+        questionRepository.save(testQuestion2);
         questionRepository.save(Question.builder().category(Category.DATABASE).content("ACID가 뭔지 설명해보세요").build());
         questionRepository.save(Question.builder().category(Category.DATA_STRUCTURE).content("배열과 List의 차이점을 설명해보세요").build());
         questionRepository.save(Question.builder().category(Category.SECURITY).content("OAuth가 뭔지 설명해보세요").build());
@@ -50,15 +57,23 @@ public class InitAndDest {
         questionRepository.save(Question.builder().category(Category.DATA_STRUCTURE).content("해시 테이블의 작동 원리를 설명해보세요").build());
         questionRepository.save(Question.builder().category(Category.SECURITY).content("SQL 인젝션 공격이 무엇인지 설명해보세요").build());
 
-        answerRepository.save(Answer.builder().writer(testUser1).question(testQuestion)
+        answerRepository.save(Answer.builder().writer(testUser1).question(testQuestion1)
                 .content("Heap 정렬은 최대/최소 힙 트리를 사용하여 요소를 정렬하는 알고리즘입니다.\n" +
                 "n개의 요소들로 힙 트리를 구성한 후, 요소를 순차적으로 제거하여 정렬된 배열을 생성합니다.\n" +
                         "힙 정렬의 시간 복잡도는 최상/최악의 경우 모두 O(n log n) 입니다.").build());
-        answerRepository.save(Answer.builder().writer(testUser2).question(testQuestion)
+        answerRepository.save(Answer.builder().writer(testUser2).question(testQuestion1)
                 .content("Quick 정렬은 분할 정복 방식의 정렬 알고리즘입니다.\n" +
                         "배열에서 pivot 요소를 선택하고 pivot보다 작은 요소와 큰 요소로 배열을 분할합니다.\n" +
                         "이후 분할된 하위 배열에 대해 동일한 방법을 재귀적으로 적용하여 정렬합니다.\n" +
                         "Quick sort는 시간 복잡도는 평균적으로 O(n log n)이며, 최악의 경우 O(n^2) 입니다.").build());
+
+        MockExam mockExam = MockExam.builder().maker(testUser1).title("기본 모의고사").information("기본 모의고사 입니다.").build();
+        mockExamRepository.save(mockExam);
+        MockExamQuestion mockExamQuestion1 = MockExamQuestion.builder().mockexam(mockExam).question(testQuestion1).build();
+        MockExamQuestion mockExamQuestion2 = MockExamQuestion.builder().mockexam(mockExam).question(testQuestion2).build();
+        mockExamQuestionRepository.save(mockExamQuestion1);
+        mockExamQuestionRepository.save(mockExamQuestion2);
+
     }
 
     @PreDestroy

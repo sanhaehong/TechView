@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ko" th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::h3}, ~{::div})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>모의 면접</title>
+</head>
+<body>
+
+<h3 class="text-dark mb-4">면접 진행</h3>
+
+<div>
+    <div class="card shadow">
+        <div class="card-body">
+            <div class="card mb-2">
+                <div class="card-body">
+                    <h4 class="card-title" th:text="${question}"></h4>
+                </div>
+            </div>
+            <h5 class="text-danger">!!답변을 한 번 완료하면 다시 시작할 수 없습니다!!</h5>
+            <div id="incode">답변 대기</div>
+            <button class="d-inline btn btn-secondary" id="stopButton">답변 완료</button>
+            <a class="btn btn-primary" type="button" th:href="@{/mockexam/process/{id}(id=${problemId + 1})}">다음으로</a>
+        </div>
+    </div>
+    <script th:inline="javascript">
+        let questionText = [[${question}]];
+        let mediaStream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+
+        window.onload = function() {
+            let synth = window.speechSynthesis;
+            let utterThis = new SpeechSynthesisUtterance(questionText);
+            synth.speak(utterThis);
+
+            utterThis.onend = function(event) {
+                generateAudioAndSend();
+            };
+
+            document.getElementById('stopButton').addEventListener('click', stopRecording);
+        }
+
+        function generateAudioAndSend() {
+            let displayDiv = document.getElementById('incode');
+
+            navigator.mediaDevices.getUserMedia({ audio: true })
+                .then(stream => {
+                    mediaStream = stream;
+
+                    mediaRecorder = new MediaRecorder(stream);
+
+                    mediaRecorder.ondataavailable = event => {
+                        recordedChunks.push(event.data);
+                    };
+
+                    mediaRecorder.start();
+
+                    displayDiv.innerHTML = "답변 중";
+
+                    mediaRecorder.onstop = () => {
+                        displayDiv.innerHTML = "답변 종료";
+                        saveAnswer();
+                    };
+                })
+                .catch(error => {
+                    console.error('Media streaming failed: ', error);
+                });
+        }
+
+        function stopRecording() {
+            mediaRecorder.stop();
+        }
+
+        function saveAnswer() {
+            let problemId = [[${problemId}]];
+
+            console.log(recordedChunks);
+
+            let blob = new Blob(recordedChunks, {
+                type: 'audio/webm'
+            });
+
+            let formData = new FormData();
+            formData.append('audio', blob);
+
+            let xhr = new XMLHttpRequest();
+            xhr.open('POST', '/mockexam/process/' + problemId)
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === xhr.DONE) {
+                    if (xhr.status === 200 || xhr.status === 201) {
+                        console.log("success!");
+                    } else {
+                        console.error("fail");
+                    }
+                }
+            };
+            xhr.send(formData);
+        }
+    </script>
+</div>
+
+
+</body>

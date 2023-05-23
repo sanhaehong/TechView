@@ -1,6 +1,9 @@
 package com.sanhaehong.project.techview.controller;
 
 import com.sanhaehong.project.techview.controller.argument.LogInUser;
+import com.sanhaehong.project.techview.domain.mockexam.MockExam;
+import com.sanhaehong.project.techview.domain.mockexam.MockExamHistory;
+import com.sanhaehong.project.techview.domain.mockexam.MockExamQuestion;
 import com.sanhaehong.project.techview.domain.question.Category;
 import com.sanhaehong.project.techview.domain.question.Question;
 import com.sanhaehong.project.techview.dto.AddMockExamDto;
@@ -13,12 +16,15 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -97,8 +103,55 @@ public class MockExamController {
             redirectAttributes.addFlashAttribute("blankTitleError", "제목을 입력해주세요");
             return "redirect:/mockexam/create";
         }
-        mockExamService.addMockExam(user.getId(), questionCheck);
+        mockExamService.addMockExam(user.getId(), addMockExamDto.getTitle(), addMockExamDto.getInformation(), questionCheck);
         return "mockexam/mockexam";
     }
+
+    @GetMapping("/select/lists")
+    public String selectMockExam(@PageableDefault Pageable pageable,
+                               Model model) {
+        Page<MockExam> mockExamPages = mockExamService.findPageAll(pageable);
+        model.addAttribute("mockExams", mockExamPages.stream().toList());
+        model.addAttribute("totalExam", mockExamPages.getTotalElements());
+        model.addAttribute("totalPage", mockExamPages.getTotalPages());
+        return "mockexam/mockexam_list";
+    }
+
+    @GetMapping("/select/exam/{mockExamId}/ready")
+    public String readyMockExam(@PathVariable Long mockExamId,
+                                @LogInUser SessionUser user,
+                                Model model) {
+        MockExamHistory mockExamHistory = mockExamService.startMockExam(mockExamId, user.getId());
+        httpSession.setAttribute("examId", mockExamHistory.getId());
+        model.addAttribute("userId", user.getId());
+        return "mockexam/mockexam_ready";
+    }
+
+    @GetMapping("/process/{problemId}")
+    public String processMockExam(@PathVariable Integer problemId,
+                                @LogInUser SessionUser user,
+                                Model model) {
+        Long examId = (Long) httpSession.getAttribute("examId");
+        if(examId == null) {
+            return "redirect:/";
+        }
+        try {
+            MockExamQuestion question = mockExamService.findQuestion(examId, problemId);
+            model.addAttribute("question", question.getQuestion().getContent());
+            model.addAttribute("problemId", problemId);
+            return "mockexam/mockexam_question";
+        } catch (IndexOutOfBoundsException e) {
+            return "redirect:/";
+        }
+    }
+
+    @PostMapping(value = "/process/{problemId}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @ResponseBody
+    public void processAnswer(@PathVariable Integer problemId,
+                                                @RequestParam("audio") MultipartFile audio,
+                                                Model model) throws IOException {
+    }
+
+
 
 }
