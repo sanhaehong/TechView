@@ -18,12 +18,13 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()
+                .cors().disable()
                 .headers().frameOptions().disable()
                 .and()
                     .authorizeHttpRequests()
                     .requestMatchers("/", "/css/**", "/img/**", "/js/**", "/login", "/question/lists", "/question/view/*", "/question/add")
                     .permitAll()
-                    .requestMatchers("/mockexam", "/mockexam/**")
+                    .requestMatchers("/mockexam", "/mockexam/**", "/mockexam/process/**", "/mockexam/history/**")
                     .hasRole(USER.name())
                 .and()
                     .logout()

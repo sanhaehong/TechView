@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko" th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::h3}, ~{::div})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>면접 제작</title>
+</head>
+<body>
+
+<h3 class="text-dark mb-4">면접 제작</h3>
+
+<div class="card shadow">
+  <div class="card-body">
+    <div th:if="${questionCheckError != null}" class="alert alert-danger mt-1" role="alert" th:text="*{questionCheckError}"></div>
+    <form th:action>
+      <input name="content" class="form-control form-control form-control-sm mb-1 d-inline" type="search" aria-controls="dataTable" placeholder="검색어" style="width: 40%; height: 40px;" />
+      <select name="category" class="form-select mb-1 d-inline" style="width: 40%; height: 40px;" >
+        <option value="" selected></option>
+        <option th:each="category : ${categories}" th:value="${category}" th:text="${category.name}"></option>
+      </select>
+      <button class="btn btn-primary" type="submit">검색</button>
+    </form>
+    <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+      <table id="dataTable" class="table my-0">
+        <thead>
+        <tr>
+          <th>선택</th>
+          <th>번호</th>
+          <th>질문</th>
+          <th>카테고리</th>
+          <th>작성일자</th>
+          <th>답변 수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="question: ${questions}">
+          <td>
+            <form th:unless="${#lists.contains(selectedQuestion, question.id)}" th:action="@{/mockexam/create/select}" method="post">
+              <input type="hidden" name="id" th:value="${question.id}">
+              <button class="btn btn-sm btn-primary" type="submit">추가</button>
+            </form>
+            <form th:if="${#lists.contains(selectedQuestion, question.id)}" th:action="@{/mockexam/create/delete}" method="post">
+              <input type="hidden" name="id" th:value="${question.id}">
+              <button class="btn btn-sm btn-danger" type="submit">삭제</button>
+            </form>
+          </td>
+          <td><a th:text="${question.id}"></a></td>
+          <td><a th:text="${question.content}"></a></td>
+          <td><a th:text="${question.category.name}"></a></td>
+          <td><a th:text="${#temporals.format(question.createdDate, 'yyyy-MM-dd')}"></a></td>
+          <td><a th:text="${question.answers.size()}"></a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col-md-6 align-self-center">
+        <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite" th:text="|총 ${totalQuestion}개|"></p>
+      </div>
+      <div class="col-md-6">
+        <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+          <ul class="pagination">
+            <li th:each="i : ${#numbers.sequence(1, totalPage, 1)}" class="page-item">
+              <a class="page-link" th:href="@{/mockexam/create(page=${i - 1}, searchcontent=${searchContent != null ? searchContent : ''}, searchcategory=${searchCategory != null ? searchCategory : ''})}" th:text="${i}"></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <div th:if="${blankTitleError != null}" class="alert alert-danger mt-1" role="alert" th:text="*{blankTitleError}"></div>
+        <form th:action th:object="${mockexam}" method="post">
+          <h6>제목</h6>
+          <div class="mb-3">
+            <input class="form-control" type="text" th:field="*{title}" placeholder="제목을 입력하세요" />
+          </div>
+          <h6>설명</h6>
+          <script>
+            function resize(obj) {
+              obj.style.height = "1px";
+              obj.style.height = (12+obj.scrollHeight)+"px";
+            }
+          </script>
+          <textarea class="form-control mb-3" type="text" id="content" th:field="*{information}" placeholder="설명을 입력하세요"
+                    onkeydown="resize(this)" onkeyup="resize(this)"></textarea>
+          <div class="mb-3"></div>
+          <div><button class="btn btn-primary d-block w-100 d-inline" type="submit">등록</button></div>
+        </form>
+    </div>
+</div>
+</div>
+
+</body>
+</html>

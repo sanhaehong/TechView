@@ -3,7 +3,6 @@ package com.sanhaehong.project.techview.service;
 import com.sanhaehong.project.techview.domain.question.Category;
 import com.sanhaehong.project.techview.domain.question.Question;
 import com.sanhaehong.project.techview.dto.AddQuestionDto;
-import com.sanhaehong.project.techview.dto.FindQuestionDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,7 +46,7 @@ class QuestionServiceTest extends ServiceTest{
     @DisplayName("검색한 질문 페이지로 받아오기")
     void findPage() {
         int pageSize = 10;
-        Page<Question> page = questionService.findPage(new FindQuestionDto("", Category.OPERATION_SYSTEM), PageRequest.of(0, pageSize));
+        Page<Question> page = questionService.findPage("", Category.OPERATION_SYSTEM, PageRequest.of(0, pageSize));
         assertThat(page.getTotalPages()).isEqualTo(1);
         assertThat(page.getTotalElements()).isEqualTo(1);
     }
