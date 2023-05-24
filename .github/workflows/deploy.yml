@@ -1,0 +1,33 @@
+name: techview CI/CD
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 체크아웃
+        uses: actions/checkout@v3
+
+      - name: JDK 17 설치
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'corretto'
+          java-version: '17'
+
+      - name: gradlew 실행 권한 부여
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: Gradle 빌드
+        run: ./gradlew clean build
+        shell: bash
+        env:
+          client_id: ${{ secrets.CLIENT_ID }}
+          client_secret: ${{ secrets.CLIENT_SECRET }}
+          ddl_auto: ${{ secrets.DDL_AUTO }}
+          profile: ${{ secrets.PROFILE }}
