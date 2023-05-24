@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="ko" th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::h3}, ~{::div})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>면접 질문</title>
+</head>
+<body>
+
+<h3 class="text-dark mb-4">면접 질문</h3>
+
+<div class="card shadow">
+  <div class="card-body">
+    <div class="btn-group" role="group"></div>
+    <form th:action>
+      <input name="content" class="form-control form-control form-control-sm mb-1 d-inline" type="search" aria-controls="dataTable" placeholder="검색어" style="width: 40%; height: 40px;" />
+      <select name="category" class="form-select mb-1 d-inline" style="width: 40%; height: 40px;" >
+        <option value="" selected></option>
+        <option th:each="category : ${categories}" th:value="${category}" th:text="${category.name}"></option>
+      </select>
+      <button class="btn btn-primary" type="submit">검색</button>
+    </form>
+    <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+      <table id="dataTable" class="table my-0">
+        <thead>
+        <tr>
+          <th>번호</th>
+          <th>질문</th>
+          <th>카테고리</th>
+          <th>작성일자</th>
+          <th>답변 수</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="question: ${questions}">
+            <td><a th:text="${question.id}" th:href="@{/question/view/{id}(id=${question.id})}"></a></td>
+            <td><a th:text="${question.content}" th:href="@{/question/view/{id}(id=${question.id})}"></a></td>
+            <td><a th:text="${question.category.name}" th:href="@{/question/view/{id}(id=${question.id})}"></a></td>
+            <td><a th:text="${#temporals.format(question.createdDate, 'yyyy-MM-dd')}" th:href="@{/question/view/{id}(id=${question.id})}"></a></td>
+            <td><a th:text="${question.answers.size()}" th:href="@{/question/view/{id}(id=${question.id})}"></a></td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col-md-6 align-self-center">
+        <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite" th:text="|총 ${totalQuestion}개|"></p>
+      </div>
+      <div class="col-md-6">
+        <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+          <ul class="pagination">
+            <li th:each="i : ${#numbers.sequence(1, totalPage, 1)}" class="page-item">
+              <a class="page-link" th:href="@{/question/lists(page=${i - 1}, searchcontent=${searchContent != null ? searchContent : ''}, searchcategory=${searchCategory != null ? searchCategory : ''})}" th:text="${i}"></a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col"><a class="btn btn-primary" type="button"  th:href="@{/question/add}">질문 등록</a></div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

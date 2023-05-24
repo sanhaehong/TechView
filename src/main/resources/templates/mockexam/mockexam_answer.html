@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ko" th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::h3}, ~{::div})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>면접 기록</title>
+</head>
+<body>
+
+<h3 class="text-dark mb-4">면접 기록</h3>
+
+<div class="card shadow">
+  <div class="card-body">
+    <div class="card" style="margin-bottom: 15px;">
+      <div class="card-body" style="margin-bottom: 0;">
+        <h5 class="card-title" style="margin: 0px;" th:text="${history.mockExam.title}"></h5>
+      </div>
+    </div>
+    <div th:each="answer: ${history.getMockExamAnswers()}">
+      <div class="card mb-3">
+        <div class="card-header d-flex align-items-center">
+          <h5 class="mb-0" th:text="${answer.mockExamQuestion.question.content}">질문</h5>
+        </div>
+        <div class="card-body">
+          <audio th:id="'audioPlayer' + ${answer.answerIndexDBId}" ></audio>
+          <button th:id="'playButton' + ${answer.answerIndexDBId}" class="btn btn-primary" th:attr="data-answer-id=${answer.answerIndexDBId}">답변 듣기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    document.querySelectorAll('.btn.btn-primary').forEach(function(button) {
+      button.addEventListener('click', function() {
+        let answerId = this.getAttribute('data-answer-id');
+        let openRequest = indexedDB.open('techviewDB', 1);
+
+        openRequest.onsuccess = function() {
+          let db = openRequest.result;
+          let transaction = db.transaction('answers');
+          let answers = transaction.objectStore('answers');
+          let request = answers.get(answerId);
+
+          request.onsuccess = function() {
+            let blob = request.result;
+
+            let audioPlayer = document.getElementById('audioPlayer' + answerId);
+            audioPlayer.src = URL.createObjectURL(blob);
+            audioPlayer.play();
+          };
+
+          request.onerror = function() {
+            console.error('Error in retrieving blob', request.error);
+          };
+        };
+
+        openRequest.onerror = function() {
+          console.error('Error in opening DB', openRequest.error);
+        };
+      });
+    });
+  </script>
+</div>
+
+</body>
+</html>

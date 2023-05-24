@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko" th:replace="~{layout/layoutFile :: layout (~{::title}, ~{::h3}, ~{::div})}"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>면접 기록</title>
+</head>
+<body>
+
+<h3 class="text-dark mb-4">면접 기록</h3>
+
+<div class="card shadow">
+    <div class="card-body">
+        <div class="table-responsive table mt-2" role="grid" aria-describedby="dataTable_info">
+            <table id="dataTable" class="table my-0">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>응시일자</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="history: ${histories}">
+                    <td><a th:text="${history.id}" th:href="@{/mockexam/history/{id}(id=${history.id})}"></a></td>
+                    <td><a th:text="${history.mockExam.title}" th:href="@{/mockexam/history/{id}(id=${history.id})}"></a></td>
+                    <td><a th:text="${#temporals.format(history.createdDate, 'yyyy-MM-dd')}" th:href="@{/mockexam/history/{id}(id=${history.id})}"></a></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-md-6 align-self-center">
+                <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite" th:text="|총 ${totalHistory}개|"></p>
+            </div>
+            <div class="col-md-6">
+                <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                    <ul class="pagination">
+                        <li th:each="i : ${#numbers.sequence(1, totalPage, 1)}" class="page-item">
+                            <a class="page-link" th:href="@{/mockexam/history/lists(page=${i - 1})}" th:text="${i}"></a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
