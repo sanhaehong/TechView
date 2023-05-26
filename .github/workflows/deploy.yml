@@ -40,10 +40,10 @@ jobs:
       - name: AWS EB 배포
         uses: einaregilsson/beanstalk-deploy@v21
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          application-name: techview
-          environment-name: Techview-env
-          version-label: 12345
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          application_name: techview
+          environment_name: Techview-env
+          version_label: 12345
           region: ap-northeast-2
-          deployment-package: deploy/application.jar
+          deployment_package: deploy/deploy.zip
