@@ -3,6 +3,7 @@ spring:
     group:
       "local": "embeddedDB,oauth"
       "build": "embeddedDB,oauth"
+      "app" : "realDB, oauth"
 
 ---
 
@@ -23,6 +24,23 @@ spring:
 spring:
   config:
     activate:
+      on-profile: "realDB"
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: none
+  datasource:
+    url: ${datasource_url}
+    username: ${datasource_username}
+    password: ${datasource_password}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+
+---
+
+spring:
+  config:
+    activate:
       on-profile: "oauth"
   security:
       oauth2:
@@ -34,4 +52,3 @@ spring:
               scope:
                 - profile
                 - email
----
