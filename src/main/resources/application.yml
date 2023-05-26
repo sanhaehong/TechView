@@ -1,17 +1,37 @@
 spring:
   profiles:
-    active: ${profile}
+    group:
+      "local": "embeddedDB,oauth"
+      "build": "embeddedDB,oauth"
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "embeddedDB"
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: ${ddl_auto}
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: "oauth"
   security:
-    oauth2:
-      client:
-        registration:
-          google:
-            client-id: ${client_id}
-            client-secret: ${client_secret}
-            scope:
-              - profile
-              - email
+      oauth2:
+        client:
+          registration:
+            google:
+              client-id: ${google_client_id}
+              client-secret: ${google_client_secret}
+              scope:
+                - profile
+                - email
+---

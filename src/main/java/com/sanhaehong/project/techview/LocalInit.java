@@ -1,4 +1,4 @@
-package com.sanhaehong.project.techview.local;
+package com.sanhaehong.project.techview;
 
 import com.sanhaehong.project.techview.domain.answer.Answer;
 import com.sanhaehong.project.techview.domain.mockexam.MockExam;
@@ -9,19 +9,14 @@ import com.sanhaehong.project.techview.domain.user.Role;
 import com.sanhaehong.project.techview.domain.user.User;
 import com.sanhaehong.project.techview.repository.*;
 import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
 @Component
-@Profile({"local", "test"})
+@Profile(value = {"local"})
 @RequiredArgsConstructor
-public class InitAndDest {
-
-    public static final int userCount = 2;
-    public static final int questionCount = 18;
-    public static final int answerCount = 2;
+public class LocalInit {
 
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
@@ -75,13 +70,4 @@ public class InitAndDest {
         mockExamQuestionRepository.save(mockExamQuestion2);
 
     }
-
-    @PreDestroy
-    public void dest() {
-        questionRepository.deleteAll();
-        answerRepository.deleteAll();
-        userRepository.deleteAll();
-    }
-
-
 }
