@@ -29,5 +29,4 @@ jobs:
         env:
           client_id: ${{ secrets.CLIENT_ID }}
           client_secret: ${{ secrets.CLIENT_SECRET }}
-          ddl_auto: ${{ secrets.DDL_AUTO }}
-          profile: ${{ secrets.PROFILE }}
+          SPRING_PROFILES_ACTIVE: build
