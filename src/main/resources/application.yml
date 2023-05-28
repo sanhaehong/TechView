@@ -11,13 +11,16 @@ spring:
   config:
     activate:
       on-profile: "embeddedDB"
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL
   jpa:
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: create-drop
     properties:
       hibernate:
-        format_sql: true
+        show_sql: true
+        dialect: org.hibernate.dialect.MySQL57Dialect
 
 ---
 
