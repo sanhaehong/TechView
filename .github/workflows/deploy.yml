@@ -31,6 +31,13 @@ jobs:
           client_secret: ${{ secrets.CLIENT_SECRET }}
           SPRING_PROFILES_ACTIVE: build
 
+      - name: 현재 시간 확인
+        uses: josStorer/get-current-time@v2
+        id: current-time
+        with:
+          format: YYYY-MM-DD-HH-mm-ss
+          utcOffset: "+09:00
+
       - name: 배포 파일 설정
         run: |
           mkdir -p deploy
@@ -44,6 +51,6 @@ jobs:
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           application_name: techview
           environment_name: Techview-env
-          version_label: 12345
+          version_label: github-action-${{steps.current-time.outputs.formattedTime}}
           region: ap-northeast-2
           deployment_package: deploy/deploy.zip
