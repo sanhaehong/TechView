@@ -36,7 +36,7 @@ jobs:
         id: current-time
         with:
           format: YYYY-MM-DD-HH-mm-ss
-          utcOffset: "+09:00
+          utcOffset: "+09:00"
 
       - name: 배포 파일 설정
         run: |
