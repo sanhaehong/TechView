@@ -35,16 +35,16 @@ public class QuestionController {
     }
 
     @GetMapping("/question/lists")
-    public String findQuestion(@RequestParam(required = false) String searchContent,
-                               @RequestParam(required = false) Category searchCategory,
+    public String findQuestion(@RequestParam(required = false) String content,
+                               @RequestParam(required = false) Category category,
                                @PageableDefault Pageable pageable,
                                Model model) {
         Page<Question> questionPages;
-        if(searchContent == null && searchCategory == null) {
+        if(content == null && category == null) {
             questionPages = questionService.findPageAll(pageable);
         }
         else {
-            questionPages = questionService.findPage(searchContent, searchCategory, pageable);
+            questionPages = questionService.findPage(content, category, pageable);
         }
         model.addAttribute("questions", questionPages.stream().toList());
         model.addAttribute("totalQuestion", questionPages.getTotalElements());
