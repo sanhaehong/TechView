@@ -18,7 +18,7 @@ public class Answer extends BaseTimeEntity {
     @Column(name = "answer_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne
