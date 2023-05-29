@@ -19,7 +19,8 @@
       <div class="card mb-3">
         <div class="card-header d-flex align-items-center">
           <img th:src="${answer.writer.picture}" style="width: 1.5em; margin-right: 10px">
-          <h5 class="mb-0" th:text="${answer.writer.name}">작성자</h5>
+          <h5 class="mb-0 me-2" th:text="${answer.writer.name}">작성자</h5>
+          <span th:if="${answer.writer.roleKey == 'ROLE_ADMIN'}" class="badge bg-primary">관리자</span>
         </div>
         <div class="card-body">
           <span th:each="line : ${answer.content.split('\n')}">
@@ -29,10 +30,15 @@
         <div class="card-body">
           <span th:text="|작성일자: ${#temporals.format(answer.createdDate, 'yyyy-MM-dd')}|"></span>
         </div>
+        <div class="card-body" th:if="${answer.writer.id == session.user.id}">
+          <form th:action="@{/question/{questionId}/answer/delete/{answerId}(questionId=${question.id}, answerId=${answer.id})}" method="post">
+            <button class="btn btn-danger d-inline" type="submit">삭제</button>
+          </form>
+        </div>
       </div>
     </div>
     <button class="btn btn-primary col mb-3" type="button" onclick="document.getElementById('ansForm').style.display = 'block'">답변 등록</button>
-    <form th:action th:object="${answerForm}" id="ansForm" style="display: none; margin-bottom: 10px" method="post" >
+    <form th:action="@{/question/{questionId}/answer/add(questionId=${question.id})}" th:object="${answerForm}" id="ansForm" style="display: none; margin-bottom: 10px" method="post" >
       <script>
         function resize(obj) {
           obj.style.height = "1px";

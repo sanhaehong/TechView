@@ -78,7 +78,7 @@ public class QuestionController {
         return "question/question_view";
     }
 
-    @PostMapping("/question/view/{questionId}")
+    @PostMapping("/question/{questionId}/answer/add")
     public String addAnswer(@PathVariable Long questionId,
                             @Valid @ModelAttribute("answerForm") AddAnswerDto addAnswerDto,
                             BindingResult bindingResult,
@@ -88,6 +88,16 @@ public class QuestionController {
             return "question/question_view";
         }
         answerService.addAnswer(user.getId(), questionId, addAnswerDto.getContent());
+        redirectAttributes.addAttribute("questionId", questionId);
+        return "redirect:/question/view/{questionId}";
+    }
+
+    @PostMapping("/question/{questionId}/answer/delete/{answerId}")
+    public String deleteAnswer(@PathVariable Long questionId,
+                            @PathVariable Long answerId,
+                            RedirectAttributes redirectAttributes) {
+        System.out.println("call delete Answer");
+        answerService.deleteAnswer(answerId);
         redirectAttributes.addAttribute("questionId", questionId);
         return "redirect:/question/view/{questionId}";
     }

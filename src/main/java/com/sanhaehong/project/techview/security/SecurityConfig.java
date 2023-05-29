@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.web.SecurityFilterChain;
 
+import static com.sanhaehong.project.techview.domain.user.Role.ADMIN;
 import static com.sanhaehong.project.techview.domain.user.Role.USER;
 
 @RequiredArgsConstructor
@@ -22,10 +23,10 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                     .authorizeHttpRequests()
-                    .requestMatchers("/", "/css/**", "/img/**", "/js/**", "/login", "/question/lists", "/question/view/*", "/question/add")
+                    .requestMatchers("/", "/css/**", "/img/**", "/js/**", "/login", "/question/lists", "/question/view/*", "/mockexam")
                     .permitAll()
-                    .requestMatchers("/mockexam", "/mockexam/**", "/mockexam/process/**", "/mockexam/history/**")
-                    .hasRole(USER.name())
+                    .requestMatchers("/question/view/*", "/question/*/answer/**", "/mockexam/**", "/mockexam/process/**", "/mockexam/history/**")
+                    .hasAnyRole(USER.name(), ADMIN.name())
                 .and()
                     .logout()
                         .logoutSuccessUrl("/")

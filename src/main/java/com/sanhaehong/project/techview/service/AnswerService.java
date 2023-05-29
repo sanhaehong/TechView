@@ -34,4 +34,12 @@ public class AnswerService {
         answerRepository.save(answer);
         return answer;
     }
+
+    @Transactional
+    public void deleteAnswer(Long answerId) {
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new NoSuchElementException("답변이 존재하지 않습니다"));
+        answer.getQuestion().getAnswers().remove(answer);
+        answerRepository.delete(answer);
+    }
 }
