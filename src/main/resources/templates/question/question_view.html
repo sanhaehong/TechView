@@ -31,21 +31,33 @@
           <span th:text="|작성일자: ${#temporals.format(answer.createdDate, 'yyyy-MM-dd')}|"></span>
         </div>
         <div class="card-body" th:if="${answer.writer.id == session.user.id}">
+          <button class="btn btn-primary col mb-3" type="button" onclick="document.getElementById('updateAns').style.display = 'block'">수정</button>
+          <form th:action="@{/question/{questionId}/answer/update/{answerId}(questionId=${question.id}, answerId=${answer.id})}" th:object="${answerDto}" id="updateAns" style="display: none; margin-bottom: 10px" method="post">
+            <script>
+              function resize(obj) {
+                obj.style.height = "1px";
+                obj.style.height = (12+obj.scrollHeight)+"px";
+              }
+            </script>
+            <textarea class="form-control mb-3" type="text" th:field="*{content}" placeholder="답변을 입력하세요"
+                      onkeydown="resize(this)" onkeyup="resize(this)"></textarea>
+            <div><button class="btn btn-primary d-block w-100" type="submit">등록</button></div>
+          </form>
           <form th:action="@{/question/{questionId}/answer/delete/{answerId}(questionId=${question.id}, answerId=${answer.id})}" method="post">
             <button class="btn btn-danger d-inline" type="submit">삭제</button>
           </form>
         </div>
       </div>
     </div>
-    <button class="btn btn-primary col mb-3" type="button" onclick="document.getElementById('ansForm').style.display = 'block'">답변 등록</button>
-    <form th:action="@{/question/{questionId}/answer/add(questionId=${question.id})}" th:object="${answerForm}" id="ansForm" style="display: none; margin-bottom: 10px" method="post" >
+    <button class="btn btn-primary col mb-3" type="button" onclick="document.getElementById('addAns').style.display = 'block'">등록</button>
+    <form th:action="@{/question/{questionId}/answer/add(questionId=${question.id})}" th:object="${answerDto}" id="addAns" style="display: none; margin-bottom: 10px" method="post" >
       <script>
         function resize(obj) {
           obj.style.height = "1px";
           obj.style.height = (12+obj.scrollHeight)+"px";
         }
       </script>
-      <textarea class="form-control mb-3" type="text" id="content" th:field="*{content}" placeholder="답변을 입력하세요"
+      <textarea class="form-control mb-3" type="text" th:field="*{content}" placeholder="답변을 입력하세요"
                 onkeydown="resize(this)" onkeyup="resize(this)"></textarea>
       <div><button class="btn btn-primary d-block w-100" type="submit">등록</button></div>
     </form>

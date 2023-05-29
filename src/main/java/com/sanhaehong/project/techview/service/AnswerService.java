@@ -42,4 +42,12 @@ public class AnswerService {
         answer.getQuestion().getAnswers().remove(answer);
         answerRepository.delete(answer);
     }
+
+    @Transactional
+    public Answer updateAnswer(Long answerId, String content) {
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new NoSuchElementException("답변이 존재하지 않습니다"));
+        answer.update(content);
+        return answer;
+    }
 }

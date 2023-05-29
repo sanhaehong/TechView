@@ -29,6 +29,11 @@ public class Answer extends BaseTimeEntity {
     @JoinColumn(name = "user_id")
     private User writer;
 
+    public void update(String content) {
+        this.content = content;
+        this.question.getAnswers().remove(this);
+    }
+
     @Builder
     public Answer(String content, Question question, User writer) {
         this.content = content;
