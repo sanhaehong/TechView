@@ -104,6 +104,7 @@ public class MockExamController {
             return "redirect:/mockexam/create";
         }
         mockExamService.addMockExam(user.getId(), addMockExamDto.getTitle(), addMockExamDto.getInformation(), questionCheck);
+        httpSession.removeAttribute("questionCheck");
         return "mockexam/mockexam";
     }
 
@@ -157,7 +158,7 @@ public class MockExamController {
     }
 
     @GetMapping("/complete")
-    public String completeMockExam() {
+    public String completeMockExam(@LogInUser SessionUser user) {
         return "mockexam/mockexam_complete";
     }
 

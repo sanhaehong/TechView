@@ -28,7 +28,7 @@ public class NavbarInterceptor implements HandlerInterceptor {
         }
 
         HttpSession httpSession = request.getSession(false);
-        if(httpSession != null) {
+        if(httpSession != null && httpSession.getAttribute("user") != null) {
             SessionUser user = (SessionUser) httpSession.getAttribute("user");
             modelAndView.addObject("userName", user.getName());
             modelAndView.addObject("userPicture", user.getPicture());
