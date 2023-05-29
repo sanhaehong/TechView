@@ -26,15 +26,15 @@ public class LocalInit {
 
     @PostConstruct
     public void init() {
-        User testUser1 = User.builder().name("철수").email("test1@gmail.com").picture("https://cdn-icons-png.flaticon.com/128/236/236831.png").role(Role.USER).build();
-        User testUser2 = User.builder().name("영희").email("test2@gmail.com").picture("https://cdn-icons-png.flaticon.com/128/201/201634.png").role(Role.USER).build();
-        userRepository.save(testUser1);
-        userRepository.save(testUser2);
+        User admin = User.builder().name("홍산해").email("sanhaehong@gmail.com").picture("https://cdn-icons-png.flaticon.com/128/236/236831.png").role(Role.ADMIN).build();
+        User user = User.builder().name("영희").email("user2@gmail.com").picture("https://cdn-icons-png.flaticon.com/128/201/201634.png").role(Role.USER).build();
+        userRepository.save(admin);
+        userRepository.save(user);
 
-        Question testQuestion1 = Question.builder().category(Category.ALGORITHM).content("가장 기억에 남는 정렬 알고리즘 1개를 골라 설명해보세요").build();
-        Question testQuestion2 = Question.builder().category(Category.NETWORK).content("www.google.com 에 접속할 때 일어나는 일을 설명해보세요").build();
-        questionRepository.save(testQuestion1);
-        questionRepository.save(testQuestion2);
+        Question question1 = Question.builder().category(Category.ALGORITHM).content("가장 기억에 남는 정렬 알고리즘 1개를 골라 설명해보세요").build();
+        Question question2 = Question.builder().category(Category.NETWORK).content("www.google.com 에 접속할 때 일어나는 일을 설명해보세요").build();
+        questionRepository.save(question1);
+        questionRepository.save(question2);
         questionRepository.save(Question.builder().category(Category.DATABASE).content("ACID가 뭔지 설명해보세요").build());
         questionRepository.save(Question.builder().category(Category.DATA_STRUCTURE).content("배열과 List의 차이점을 설명해보세요").build());
         questionRepository.save(Question.builder().category(Category.SECURITY).content("OAuth가 뭔지 설명해보세요").build());
@@ -52,20 +52,20 @@ public class LocalInit {
         questionRepository.save(Question.builder().category(Category.DATA_STRUCTURE).content("해시 테이블의 작동 원리를 설명해보세요").build());
         questionRepository.save(Question.builder().category(Category.SECURITY).content("SQL 인젝션 공격이 무엇인지 설명해보세요").build());
 
-        answerRepository.save(Answer.builder().writer(testUser1).question(testQuestion1)
+        answerRepository.save(Answer.builder().writer(admin).question(question1)
                 .content("Heap 정렬은 최대/최소 힙 트리를 사용하여 요소를 정렬하는 알고리즘입니다.\n" +
                 "n개의 요소들로 힙 트리를 구성한 후, 요소를 순차적으로 제거하여 정렬된 배열을 생성합니다.\n" +
                         "힙 정렬의 시간 복잡도는 최상/최악의 경우 모두 O(n log n) 입니다.").build());
-        answerRepository.save(Answer.builder().writer(testUser2).question(testQuestion1)
+        answerRepository.save(Answer.builder().writer(user).question(question1)
                 .content("Quick 정렬은 분할 정복 방식의 정렬 알고리즘입니다.\n" +
                         "배열에서 pivot 요소를 선택하고 pivot보다 작은 요소와 큰 요소로 배열을 분할합니다.\n" +
                         "이후 분할된 하위 배열에 대해 동일한 방법을 재귀적으로 적용하여 정렬합니다.\n" +
                         "Quick sort는 시간 복잡도는 평균적으로 O(n log n)이며, 최악의 경우 O(n^2) 입니다.").build());
 
-        MockExam mockExam = MockExam.builder().maker(testUser1).title("기본 모의고사").information("기본 모의고사 입니다.").build();
+        MockExam mockExam = MockExam.builder().maker(admin).title("기본 모의고사").information("기본 모의고사 입니다.").build();
         mockExamRepository.save(mockExam);
-        MockExamQuestion mockExamQuestion1 = MockExamQuestion.builder().mockexam(mockExam).question(testQuestion1).build();
-        MockExamQuestion mockExamQuestion2 = MockExamQuestion.builder().mockexam(mockExam).question(testQuestion2).build();
+        MockExamQuestion mockExamQuestion1 = MockExamQuestion.builder().mockexam(mockExam).question(question1).build();
+        MockExamQuestion mockExamQuestion2 = MockExamQuestion.builder().mockexam(mockExam).question(question2).build();
         mockExamQuestionRepository.save(mockExamQuestion1);
         mockExamQuestionRepository.save(mockExamQuestion2);
 
