@@ -32,6 +32,23 @@ public class AnswerService {
                 .content(content)
                 .build();
         answerRepository.save(answer);
+        question.getAnswers().add(answer);
+        return answer;
+    }
+
+    @Transactional
+    public void deleteAnswer(Long answerId) {
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new NoSuchElementException("답변이 존재하지 않습니다"));
+        answer.getQuestion().getAnswers().remove(answer);
+        answerRepository.delete(answer);
+    }
+
+    @Transactional
+    public Answer updateAnswer(Long answerId, String content) {
+        Answer answer = answerRepository.findById(answerId)
+                .orElseThrow(() -> new NoSuchElementException("답변이 존재하지 않습니다"));
+        answer.update(content);
         return answer;
     }
 }

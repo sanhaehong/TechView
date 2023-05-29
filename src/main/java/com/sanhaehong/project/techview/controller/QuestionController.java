@@ -4,7 +4,7 @@ import com.sanhaehong.project.techview.controller.argument.LogInUser;
 import com.sanhaehong.project.techview.domain.answer.Answer;
 import com.sanhaehong.project.techview.domain.question.Category;
 import com.sanhaehong.project.techview.domain.question.Question;
-import com.sanhaehong.project.techview.dto.AddAnswerDto;
+import com.sanhaehong.project.techview.dto.AnswerDto;
 import com.sanhaehong.project.techview.dto.AddQuestionDto;
 import com.sanhaehong.project.techview.security.SessionUser;
 import com.sanhaehong.project.techview.service.AnswerService;
@@ -69,7 +69,7 @@ public class QuestionController {
 
     @GetMapping("/question/view/{id}")
     public String viewQuestion(@PathVariable Long id,
-                               @ModelAttribute("answerForm") AddAnswerDto addAnswerDto,
+                               @ModelAttribute("answerDto") AnswerDto answerDto,
                                Model model) {
         Question question = questionService.findQuestion(id);
         List<Answer> answers = questionService.findAnswers(id);
@@ -78,16 +78,39 @@ public class QuestionController {
         return "question/question_view";
     }
 
-    @PostMapping("/question/view/{questionId}")
+    @PostMapping("/question/{questionId}/answer/add")
     public String addAnswer(@PathVariable Long questionId,
-                            @Valid @ModelAttribute("answerForm") AddAnswerDto addAnswerDto,
+                            @Valid @ModelAttribute("answerDto") AnswerDto answerDto,
                             BindingResult bindingResult,
                             @LogInUser SessionUser user,
                             RedirectAttributes redirectAttributes) {
         if(bindingResult.hasErrors()) {
             return "question/question_view";
         }
-        answerService.addAnswer(user.getId(), questionId, addAnswerDto.getContent());
+        answerService.addAnswer(user.getId(), questionId, answerDto.getContent());
+        redirectAttributes.addAttribute("questionId", questionId);
+        return "redirect:/question/view/{questionId}";
+    }
+
+    @PostMapping("/question/{questionId}/answer/update/{answerId}")
+    public String updateAnswer(@PathVariable Long questionId,
+                            @Valid @ModelAttribute("answerDto") AnswerDto answerDto,
+                            @PathVariable Long answerId,
+                            BindingResult bindingResult,
+                            RedirectAttributes redirectAttributes) {
+        if(bindingResult.hasErrors()) {
+            return "question/question_view";
+        }
+        answerService.updateAnswer(answerId, answerDto.getContent());
+        redirectAttributes.addAttribute("questionId", questionId);
+        return "redirect:/question/view/{questionId}";
+    }
+
+    @PostMapping("/question/{questionId}/answer/delete/{answerId}")
+    public String deleteAnswer(@PathVariable Long questionId,
+                            @PathVariable Long answerId,
+                            RedirectAttributes redirectAttributes) {
+        answerService.deleteAnswer(answerId);
         redirectAttributes.addAttribute("questionId", questionId);
         return "redirect:/question/view/{questionId}";
     }
