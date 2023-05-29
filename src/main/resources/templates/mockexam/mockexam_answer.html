@@ -18,7 +18,7 @@
     <div th:each="answer: ${history.getMockExamAnswers()}">
       <div class="card mb-3">
         <div class="card-header d-flex align-items-center">
-          <h5 class="mb-0" th:text="${answer.mockExamQuestion.question.content}">질문</h5>
+          <h5 class="mb-0"><a th:text="${answer.mockExamQuestion.question.content}" th:href="@{/question/view/{id}(id=${answer.mockExamQuestion.question.id})}"></a></h5>
         </div>
         <div class="card-body">
           <audio th:id="'audioPlayer' + ${answer.answerIndexDBId}" ></audio>
