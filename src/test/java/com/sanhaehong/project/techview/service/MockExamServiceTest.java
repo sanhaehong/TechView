@@ -39,11 +39,13 @@ public class MockExamServiceTest extends ServiceTest{
     }
 
     @Test
-    @DisplayName("모의고사 생성")
+    @DisplayName("모의고사 제작")
     void addMockExam() {
         mockExamService.addMockExam(testUser.getId(), "모의고사", "모의고사 입니다", List.of(testQuestion.getId()));
         MockExam mockExam = mockExamService.findMockExamPageAll(Pageable.ofSize(10)).stream().findFirst().get();
         assertThat(mockExam.getTitle()).isEqualTo("모의고사");
         assertThat(mockExam.getInformation()).isEqualTo("모의고사 입니다");
     }
+
+
 }
