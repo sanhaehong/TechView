@@ -42,6 +42,7 @@ jobs:
         run: |
           mkdir -p deploy
           cp build/libs/*.jar deploy/application.jar
+          cp -r .ebextensions deploy/.ebextensions
           cd deploy && zip -r deploy.zip .
 
       - name: AWS EB 배포
