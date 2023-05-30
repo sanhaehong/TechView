@@ -60,10 +60,10 @@ public class MockExamService {
         return mockExamHistory;
     }
 
-    public MockExamQuestion findQuestion(Long mockExamId, Integer problemSeq) {
-        MockExam mockExam = mockExamRepository.findById(mockExamId)
-                .orElseThrow(() -> new NoSuchElementException("모의고사 정보가 존재하지 않습니다"));
-        return mockExam.getQuestions().get(problemSeq);
+    public MockExamQuestion findQuestion(Long examHistoryId, Integer problemSeq) {
+        MockExamHistory mockExamHistory = mockExamHistoryRepository.findById(examHistoryId)
+                .orElseThrow(() -> new NoSuchElementException("모의고사 응시 정보가 존재하지 않습니다"));
+        return mockExamHistory.getMockExam().getQuestions().get(problemSeq);
     }
 
     public void saveAnswer(Long examHistoryId, Integer problemId, String answerIndexDBId) {

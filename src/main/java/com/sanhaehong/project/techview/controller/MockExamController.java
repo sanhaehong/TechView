@@ -123,7 +123,7 @@ public class MockExamController {
                                 @LogInUser SessionUser user,
                                 Model model) {
         MockExamHistory mockExamHistory = mockExamService.startMockExam(mockExamId, user.getId());
-        httpSession.setAttribute("examId", mockExamHistory.getId());
+        httpSession.setAttribute("examHistoryId", mockExamHistory.getId());
         model.addAttribute("userId", user.getId());
         return "mockexam/mockexam_ready";
     }
@@ -132,15 +132,15 @@ public class MockExamController {
     public String processMockExam(@PathVariable Integer problemId,
                                 @LogInUser SessionUser user,
                                 Model model) {
-        Long examId = (Long) httpSession.getAttribute("examId");
-        if(examId == null) {
+        Long examHistoryId = (Long) httpSession.getAttribute("examHistoryId");
+        if(examHistoryId == null) {
             return "redirect:/";
         }
         try {
-            MockExamQuestion question = mockExamService.findQuestion(examId, problemId);
+            MockExamQuestion question = mockExamService.findQuestion(examHistoryId, problemId);
             model.addAttribute("question", question.getQuestion().getContent());
             model.addAttribute("problemId", problemId);
-            model.addAttribute("answerIndexDBId", examId + "-" + problemId + "-" + UUID.randomUUID());
+            model.addAttribute("answerIndexDBId", examHistoryId + "-" + problemId + "-" + UUID.randomUUID());
             return "mockexam/mockexam_question";
         } catch (IndexOutOfBoundsException e) {
             return "redirect:/mockexam/complete";
@@ -152,8 +152,7 @@ public class MockExamController {
     public void processAnswer(@PathVariable Integer problemId,
                               @RequestParam("answerIndexDBId") String answerIndexDBId,
                               @LogInUser SessionUser user) {
-        System.out.println(answerIndexDBId);
-        Long examHistoryId = (Long) httpSession.getAttribute("examId");
+        Long examHistoryId = (Long) httpSession.getAttribute("examHistoryId");
         mockExamService.saveAnswer(examHistoryId, problemId, answerIndexDBId);
     }
 
