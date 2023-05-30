@@ -18,7 +18,7 @@ public class Answer extends BaseTimeEntity {
     @Column(name = "answer_id")
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String content;
 
     @ManyToOne
@@ -28,6 +28,11 @@ public class Answer extends BaseTimeEntity {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User writer;
+
+    public void update(String content) {
+        this.content = content;
+        this.question.getAnswers().remove(this);
+    }
 
     @Builder
     public Answer(String content, Question question, User writer) {
