@@ -14,14 +14,13 @@ import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class AnswerService {
 
     private final UserRepository userRepository;
     private final QuestionRepository questionRepository;
     private final AnswerRepository answerRepository;
 
-    @Transactional
     public Answer addAnswer(Long userId, Long questionId, String content) {
         Question question = questionRepository.findById(questionId)
                 .orElseThrow(() -> new NoSuchElementException("질문이 존재하지 않습니다"));
@@ -36,7 +35,6 @@ public class AnswerService {
         return answer;
     }
 
-    @Transactional
     public void deleteAnswer(Long answerId) {
         Answer answer = answerRepository.findById(answerId)
                 .orElseThrow(() -> new NoSuchElementException("답변이 존재하지 않습니다"));
