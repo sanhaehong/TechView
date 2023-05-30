@@ -16,7 +16,7 @@ import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class QuestionService {
 
     private final QuestionRepository questionRepository;

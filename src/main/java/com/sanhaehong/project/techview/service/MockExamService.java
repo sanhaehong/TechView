@@ -18,7 +18,7 @@ import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @Service
-@Transactional(readOnly = true)
+@Transactional
 public class MockExamService {
 
     private final MockExamRepository mockExamRepository;
@@ -28,7 +28,6 @@ public class MockExamService {
     private final MockExamHistoryRepository mockExamHistoryRepository;
     private final MockExamAnswerRepository mockExamAnswerRepository;
 
-    @Transactional
     public void addMockExam(Long userId, String title, String information, List<Long> questionIds) {
         List<Question> questions = questionIds.stream()
                 .map(id -> questionRepository.findById(id)
